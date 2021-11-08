@@ -35,26 +35,6 @@ class Post(models.Model):
         ("published", "Published"),
     )
 
-    # POST_CASTEGORY = (
-    #     ("regional", "Regional"),
-    #     ("scintific", "Scientific"),
-    #     ("physics", "Physics"),
-    #     ("chemistry", "Chemistry"),
-    #     ("mathematics", "Mathematics"),
-    #     ("biology", "Biology"),
-    #     ("sports", "Sports"),
-    #     ("ai", "AI"),
-    #     ("offtopic", "Off-topic"),
-    #     ("programming", "Programming"),
-    #     ("datascience", "Data Science"),
-    #     ("entrance_exam", "Entrance Exam"),
-    #     ("travel", "Travel"),
-    #     ("celebrity_talk", "Celebrity_talk"),
-    #     ("world", "World"),
-    #     ("astronomy", "Astronomy"),
-    #     ("engineering", "Engineering"),
-    #     ("technology", "Technology"),
-    # )
 
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=120)
