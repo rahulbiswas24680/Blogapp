@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}User Login{% endblock title %}
+{% block content %}
+<fieldset class="rounded border px-3 py-3 mt-2" id="post-media1"  style="margin-bottom: 200px;">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Register</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-dark" type="submit">Sign Up</button>
+            <small>
+                <a href="{% url 'user-login' %}">Are you already registered? Please login now.</a>
+            </small>
+        </div>
+    </form>
+</fieldset>
+{% endblock content %}

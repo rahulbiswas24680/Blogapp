@@ -1,0 +1,18 @@
+<!-- <div class="text-left ml-2">{{ total_likes }} Like{{ total_likes|pluralize }}</div> -->
+{% if user.is_authenticated %}
+<span>
+    <!-- <div class="text-left ml-2">{{ total_likes }} Like{{ total_likes|pluralize }}</div> -->
+    <form action="{% url 'like-post' %}" method="post">
+        {% csrf_token %}
+        {% if is_liked %}
+        <button type="submit" id="like" value='{{ post.id }}' name="post_id" class="btn btn-primary btn-sm"><img
+                src="https://img.icons8.com/ios-glyphs/20/000000/thumb-up--v1.png" class="m-1" />Liked</button>
+        {% else %}
+        <button type="submit" id="like" value='{{ post.id }}' name="post_id" class="btn btn-outline-primary btn-sm"><img
+                src="https://img.icons8.com/ios/20/000000/thumb-up--v1.png" class="m-1" />Like</button>
+        {% endif %}
+    </form>
+</span>
+{% else %}
+<div class="text-left ml-2">{{ total_likes }} Like{{ total_likes|pluralize }}</div>
+{% endif %}

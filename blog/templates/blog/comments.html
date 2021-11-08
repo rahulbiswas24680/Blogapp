@@ -1,0 +1,63 @@
+
+
+<br>
+{{ comments.count }} Comment{{ comments|pluralize }}
+<hr>
+<div class="container mt-2">
+    <div class="form-group row">
+        <form method="post" class="comment-form" action=".">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="submit" class="my-1 btn btn-outline-success btn-sm">
+        </form>
+        <!-- {% if requests.user.is_authenticated %}
+        <input type="submit" class="my-1 btn btn-outline-success btn-sm">
+        {% else %}
+        <input type="submit" class="my-1 btn btn-outline-success btn-sm" disabled>
+        {% endif %} -->
+
+    </div>
+</div>
+
+{% for comment in comments %}
+<blockquote class="blockquote">
+    <div class="row" style="width: 500px;">
+        <img class="rounded-circle m-3" src="{{ comment.user.profile.image.url }}" alt=""
+            style="height: 35px; width: 35px">
+        <p class="my-3 mx-3">
+            {{ comment.content|safe }}
+        </p>
+    </div>
+    <footer class="blockquote-footer"><small title="Source Title">by {{ comment.user|capfirst }}</small>
+        <button class="reply-btn btn-sm btn-outline-dark ml-5 rounded-circle"><i class="fa fa-reply"
+                aria-hidden="true"></i>
+        </button>
+    </footer>
+</blockquote>
+<div class="replied-comments container mt-2 ml-5" style="display: none;">
+    {% for reply in comment.replies.all %}
+    <blockquote class="blockquote">
+        <div class="row" style="width: 500px;">
+            <img class="rounded-circle m-3" src="{{ reply.user.profile.image.url }}" alt=""
+                style="height: 35px; width: 35px">
+            <p class="my-3 mx-3">{{ reply.content|safe }}</p>
+        </div>
+        <footer class="blockquote-footer"><small title="Source Title">by {{ reply.user|capfirst }}</small>
+        </footer>
+    </blockquote>
+    {% endfor %}
+    <div class="form-group row">
+        <form method="post" class="reply-form" action=".">
+            {% csrf_token %}
+            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+            {{ comment_form }}
+            <input type="submit" class="my-1 btn btn-outline-success btn-sm">
+            <!-- {% if requests.user.is_authenticated %}
+            <input type="submit" class="my-1 btn btn-outline-success btn-sm">
+            {% else %}
+            <input type="submit" class="my-1 btn btn-outline-success btn-sm" disabled>
+            {% endif %} -->
+        </form>
+    </div>
+</div>
+{% endfor %}

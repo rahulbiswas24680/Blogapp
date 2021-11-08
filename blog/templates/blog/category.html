@@ -1,0 +1,73 @@
+{% extends "blog/base.html" %}
+{% block title %}Category{% endblock title %}
+{% block content %}
+{% load humanize %}
+
+
+<!-- navs of category of Post -->
+
+<ul class="nav nav-pills">
+    <span class="h6 text-dark my-auto"> Topic: </span>
+    {% for cat in catlist.all %}
+
+    {% if catlist.cat == cat %}
+    <li class="nav-item active">
+        <a class="nav-link mx-1" href="{% url 'category' category=catlist.cat %}">{{ catlist.cat }}</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link mx-1" href="{% url 'category' category=cat %}">{{ cat }}</a>
+    </li>
+    {% endif %}
+
+    {% endfor %}
+</ul>
+
+{% for post in catlist.posts %}
+
+<div class="media border rounded my-2 mb-3" id="post-media2">
+    <img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img mr-1">
+    <div class="media-body">
+        <h5 class="display-4 m-2 ">
+            <a href="{{ post.get_absolute_url }}" class="article-title title-hover">{{ post.title }}</a>
+        </h5>
+        <span>
+            <span class="ml-2 mr-n3">By </span><a href="#" class="mx-3 mb-3">{{ post.author }}</a>
+        </span>
+        <span class="mx-3 mb-3 text-muted">| {{ post.updated|naturaltime }}</span>
+        <pre>
+            <p class="article-body card-text m-2">{{ post.body|slice:":200"|safe }} .....<a href="{{ post.get_absolute_url }}">read more</a></p>
+        </pre>
+    </div>
+</div>
+
+{% empty %}
+
+<div class="media border rounded my-2 mb-3" id="post-media2">
+    <h6 class="display-4 m-2">No post found having search "{{ request.GET.q }}"</h6>
+</div>
+
+{% endfor %}
+
+
+{% if page_obj.has_previous %}
+<!--page_obj is passed from the context of views function-->
+<a class='btn btn-outline-info mb-4' href="?page=1">&laquo; First</a>
+<a class='btn btn-outline-info mb-4' href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a class='btn btn-info mb-4' href="?page={{ num }}">{{ num }}</a>
+{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a class='btn btn-outline-info mb-4'
+    href="?page={{ num }}">{{ num }}</a>
+    {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <!--page_obj is passed from the context of views function-->
+    <a class='btn btn-outline-info mb-4' href="?page={{ page_obj.next_page_number }}">Next Page</a>
+    <a class='btn btn-outline-info mb-4' href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+    {% endif %}
+
+    {% endblock content %}

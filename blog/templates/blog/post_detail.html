@@ -1,0 +1,39 @@
+{% extends "blog/base.html" %}
+{% block title %}Home |{% endblock title %}
+{% block content %}
+{% load humanize %}
+<fieldset class="rounded border-4 px-3 py-3 mt-2" id="post-media1">
+
+    <div class="media border-4 rounded my-2">
+        <img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img mr-3">
+        <div class="media-body">
+            <h5 class="display-4 m-2 article-title">{{ post.title }}</h5>
+            <span>
+                <span class="ml-2 mr-n3">By </span><a href="#" class="mx-3 mb-3">{{ post.author }}</a>
+            </span>
+            <span class="mx-3 mb-3 text-muted">| {{ post.updated|naturaltime }}</span>
+            <pre>
+            <p class="article-body card-text mt-5">{{ post.body|safe }}</p>
+            </pre>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3" id="like-section">
+                    {% include 'blog/like_section.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <a id="delete" href="{% url 'delete-post' post.id %}"
+                        class="btn btn-outline-danger float-right mt-3 mr-5">Delete</a>
+                    <a href="{% url 'edit-post' post.id %}" class="btn btn-outline-dark float-right mt-3 mr-2">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="main-comment-section rounded border-4 px-3 py-3 mt-2" id="post-media1"
+style="padding-left: 100px!important;padding-right: 100px!important;">
+{% include 'blog/comments.html' %}
+</fieldset>
+<br>
+<br>
+{% endblock content %}

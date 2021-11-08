@@ -1,0 +1,270 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="http://fonts.cdnfonts.com/css/epilog" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'blog/static.css' %}">
+
+    <title>Blogapp - {% block title %}{% endblock title %}</title>
+
+
+  </head>
+
+  <body
+      style="background-color: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+
+    <header class="header fixed-top">
+      <nav class="navbar navbar-expand-lg navbar-dark"
+          style="background-image: linear-gradient(to left,#2acbaa, #145850);">
+        <a class="navbar-brand" id="brand" href="{% url 'blog-home' %}">
+          <h2 style="color: #ffffff;font-family: 'Epilog', sans-serif;margin-left: 340px;">
+            Blogapp</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto" id="menus">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog-home' %}">
+                Home<span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog-about' %}">
+                About
+              </a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'blog-home' %}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" name='q' aria-label="Search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fa fa-search"
+                  aria-hidden="true"></i></button>
+          </form>
+
+
+
+          <ul class="navbar-nav float-right ml-auto">
+
+            {% if user.is_authenticated %}
+            <li class="nav-item me-3 me-lg-0 dropdown" style="margin-right: 390px;">
+
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown"
+                  aria-expanded="false">
+                <span id="username">{{user.username}}</span>
+                <img src="{{ user.profile.image.url }}" class="rounded-circle" height="40" alt="" loading="lazy">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right ul-bg-red" aria-labelledby="navbarDropdown1">
+                <li><a class="dropdown-item li-bg-red" href="{% url 'profile' %}">
+                    <h6 style="color: #ffffff;font-family: Arial; font-weight: 700; text-align: center;">Profile</h6>
+                  </a></li>
+                <li><a class="dropdown-item li-bg-red" href="{% url 'user-logout' %}">
+                    <h6 style="color: #ffffff;font-family: Arial; font-weight: 700;text-align: center;">Logout</h6>
+                  </a></li>
+              </ul>
+            </li>
+            {% else %}
+            <li class="nav-item pt-1">
+              <a class="nav-link" href="{% url 'user-register' %}">
+                <h6 style="color: #ffffff;font-family: Arial; font-weight: 700;">Register</h6>
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item pt-1" style="margin-right: 400px;">
+              <a class="nav-link" href="{% url 'user-login' %}">
+                <h6 style="color: #ffffff;font-family: Arial; font-weight: 700;">Login</h6>
+              </a>
+            </li>
+            {% endif %}
+
+          </ul>
+        </div>
+
+      </nav>
+    </header>
+
+
+    <main class="container" style="margin-top: 30px;">
+      <div class="row">
+        <div class="col-md-9 col-lg-9 mt-5">
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
+
+          {% block content %}{% endblock content %}
+
+        </div>
+        <div class="col-md-3 col-lg-3 mt-2">
+          <div class="row">
+            <div class="mt-5">
+              <ul class="list-group position-fixed">
+                <legend class="text-center h6">Useful links</legend>
+                <li class="list-group-item" id="post-media2">
+                  <a class="text-dark text-decoration-none" href="{% url 'new-post' %}"><img
+                        src="https://img.icons8.com/small/16/000000/create-new.png" /> Create Post</a>
+                </li>
+                <li class="list-group-item text-center" id="post-media2">
+                  <a class="text-dark text-decoration-none" href="#"><img
+                        src="https://img.icons8.com/small/16/000000/sorting-answers.png" /> Sort</a>
+                </li>
+              </ul>
+              <ul class="list-group position-fixed" style="margin-top: 200px;">
+                <legend class="text-center h6">Filter by category</legend>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/quill-with-ink.png" /> Scientific</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/physics.png" /> Physics</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/test-tube.png" /> chemistry</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/trigonometry.png" /> Mathematics</li>
+                <li class="list-group-item text-center" id="post-media2" <img
+                    src="https://img.icons8.com/small/16/000000/dog.png" /> Biology
+                </li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/javelin-throw.png" /> Sports</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/robot-2.png" /> AI</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/spa-flower.png" /> Off topic</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/code.png" /> Programming</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/data-.png" /> Data Science</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/front-gate-open.png" /> Entrance Exam</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/beach.png" /> Travel</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/talk-female.png" /> Celebrity Talk</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/geography.png" /> World</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/rocket.png" /></li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/engineer.png" /> Engineering</li>
+                <li class="list-group-item text-center" id="post-media2"><img
+                      src="https://img.icons8.com/small/16/000000/accessibility1.png" /> Technology</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3" id='footer'>
+      <div class="container">
+        <span class="text-light">Place sticky footer content here.</span>
+      </div>
+    </footer>
+
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javaScript">
+
+
+      $('#delete').click(function () {
+        return confirm('Are you sure to delete the post?')
+      })
+
+      $('.reply-btn').click(function(){
+        $(this).parent().parent().next('.replied-comments').fadeToggle()
+      });
+
+
+      $(document).on('click', '#like', function(event) {
+        event.preventDefault();
+        var pk = $(this).attr('value');
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'like-post' %}",
+          data: {'id': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+          dataType: 'json',
+          success: function (response) {
+            $('#like-section').html(response['form']);
+            console.log($('#like-section').html(response['form'])); 
+          },
+          error: function (rs, e) {
+            console.log(rs.responseText);
+          }
+        })
+      })
+
+      $(document).on('submit', '.comment-form', function(event){
+        event.preventDefault();
+        console.log($(this).serialize());
+        $.ajax({
+          type: 'POST',
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function (response) {
+            $('.main-comment-section').html(response['form']); 
+            $('textarea').val('');
+            $('.reply-btn').click(function(){
+              $(this).parent().parent().next('.replied-comments').fadeToggle();
+              $('textarea').val('');
+            });
+          },
+          error: function (rs, e) {
+            console.log(rs.responseText);
+          }
+        })
+      })
+      $(document).on('submit', '.reply-form', function(event){
+        event.preventDefault();
+        console.log($(this).serialize());
+        $.ajax({
+          type: 'POST',
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function (response) {
+            $('.main-comment-section').html(response['form']); 
+            $('textarea').val('');
+            $('.reply-btn').click(function(){
+              $(this).parent().parent().next('.replied-comments').fadeToggle();
+              $('textarea').val('');
+            });
+          },
+          error: function (rs, e) {
+            console.log(rs.responseText);
+          }
+        })
+      })
+
+
+      // sidebar category filter with js
+      
+    </script>
+  </body>
+
+</html>
