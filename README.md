@@ -70,3 +70,9 @@ Create SuperUser
 ```bash
 python manage.py createsuperuser
 ```
+
+Tor run this on browser,
+
+```bash
+python manage.py runserver
+```
